@@ -103,4 +103,10 @@ public class BoardControllerTest {
         log.info(resultPage);
 
     }
+
+    @Test
+    public void testListPaging() throws Exception {
+        log.info(mvc.perform(MockMvcRequestBuilders.get("/board/list").param("pageNum", "1").param("amount", "10"))
+                .andReturn().getModelAndView().getModelMap());
+    }
 }

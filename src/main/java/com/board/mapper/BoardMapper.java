@@ -1,6 +1,7 @@
 package com.board.mapper;
 
 import com.board.domain.BoardVO;
+import com.board.domain.Criteria;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface BoardMapper {
     public int delete(Long bno);
 
     public int update(BoardVO vo);
+
+    public List<BoardVO> getListWithPaging(Criteria criteria);
 }

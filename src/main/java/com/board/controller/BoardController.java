@@ -1,6 +1,7 @@
 package com.board.controller;
 
 import com.board.domain.BoardVO;
+import com.board.domain.Criteria;
 import com.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -21,14 +22,14 @@ public class BoardController {
 
     private final BoardService service;
 
-    //@GetMapping("")
+    /*@GetMapping("")
     public ModelAndView openBoardList() throws Exception {
         log.info("==========board List========");
         ModelAndView mv = new ModelAndView("/board/restBoardList");
         List<BoardVO> list = service.getList();
         mv.addObject("list", list);
         return mv;
-    }
+    }*/
 
     @GetMapping("/write")
     public String registerGet() throws Exception {
@@ -70,9 +71,9 @@ public class BoardController {
     }*/
 
     @GetMapping("/list")
-    public void list(Model model) {
+    public void list(Criteria criteria, Model model) {
         log.info("list");
-        model.addAttribute("list", service.getList());
+        model.addAttribute("list", service.getList(criteria));
     }
 
     @GetMapping("/register")
