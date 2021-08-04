@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세 화면</title>
+    <link rel="stylesheet" th:href="@{/resources/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <h2>게시글 상세 화면</h2>
+    <form id="frm" method="post">
+        <table class="board_detail">
+            <colgroup>
+                <col width="15%"/>
+                <col width="35%"/>
+                <col width="15%"/>
+                <col width="35%"/>
+            </colgroup>
+            <caption>게시글 상세내용</caption>
+            <tbody>
+            <tr>
+                <th scope="row">글 번호</th>
+                <td th:text="${board.bno }"></td>
+                <th scope="row">조회수</th>
+                <td th:text="${board.viewcnt }"></td>
+            </tr>
+            <tr>
+                <th scope="row">작성자</th>
+                <td th:text="${board.writer }"></td>
+                <th scope="row">작성일</th>
+                <td th:text="${board.regdate }"></td>
+            </tr>
+            <tr>
+                <th scope="row">제목</th>
+                <td colspan="3"><input type="text" id="title" name="title" th:value="${board.title }"/></td>
+            </tr>
+            <tr>
+                <td colspan="4" class="view_text">
+                    <textarea title="내용" id="content" name="content" th:text="${board.content }"></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="method" name="_method"/>
+        <input type="hidden" id="bno" name="bno" th:value="${board.bno }">
+        <!-- 여기 -->
+    </form>
+
+    <!--<div class="file_list">
+        &lt;!&ndash; 여기 &ndash;&gt;
+        <a th:each="list : ${board.fileList}" th:href="@{/board/file(idx=${list.idx}, boardIdx=${list.bno})}"
+           th:text="|${list.originalFileName} (${list.fileSize} kb)|"></a>
+    </div>-->
+
+    <a href="#this" id="list" class="btn">목록으로</a>
+    <a href="#this" id="edit" class="btn">수정하기</a>
+    <a href="#this" id="delete" class="btn">삭제하기</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var bno = $("#bno").val();
+
+        $('#list').click(function () {
+            location.href = '/board/';
+        })
+
+        /*$("#edit").on("click", function(){
+            $("#method").val("post");
+            var frm = $("#frm")[0];
+            frm.action = "/board/"+bno;
+            frm.submit();
+        });*/
+
+        $("#edit").click(function() {
+            var jsonData = {
+                bno : $("#bno").val(),
+                title : $("#title").val(),
+                content : $("#content").val()
+            };
+            $.ajax({
+                url : "/board/update/" + bno,
+                type : "PUT",
+                data : JSON.stringify(jsonData),
+                //contentType : "application/json; charset=utf-8",
+                headers:{ "Content-Type": "application/json", "X-HTTP-Method-Override": "PUT"},
+                dataType : "json"
+            }).done(function () {
+                alert('수정 되었습니다.');
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        });
+
+        /*$("#delete").on("click", function () {
+            /!* 여기 *!/
+            $("#method").val("DELETE");
+            var frm = $("#frm")[0];
+            frm.action = "/board/" + bno;
+            frm.submit();
+        });*/
+
+        $("#delete").click(function() {
+            /*var jsonData = JSON.stringify({
+                bno : $("#bno").val()
+            });*/
+            $.ajax({
+                url : "/board/delete/" + bno,
+                type : "delete",
+                //data : jsonData,
+                //contentType : "application/json;charset=utf-8",
+                headers:{ "Content-Type": "application/json", "X-HTTP-Method-Override": "DELETE"},
+                dataType : "json",
+                success : function(data) {
+                    alert("삭제 성공!");
+                    location.href = "/board";
+                },
+                error : function(error) {
+                    //alert("삭제 실패!");
+                    alert(JSON.stringify(error));
+                    //location.href = "/board";
+                }
+            })
+        });
+    });
+</script>
+</body>
+</html>

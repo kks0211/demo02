@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>board</title>
+    <link rel="stylesheet" th:href="@{/resources/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <h2>게시글 등록</h2>
+    <!-- 여기 -->
+    <form id="frm" name="frm" method="post" action="/board/write">
+        <table class="board_detail">
+            <tr>
+                <td>제목</td>
+                <td><input type="text" id="title" name="title"/></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea id="content" name="content"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>작성자</td>
+                <td><input type="text" id="writer" name="writer"/></td>
+            </tr>
+        </table>
+        <!--<input type="file" id="files" name="files" multiple="multiple">-->
+        <!--        <input type="submit" id="submit" value="저장" class="btn">-->
+    </form>
+    <a href="#this" id="save" class="btn">저장</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    /*$("#save").click(function() {
+        var jsonData = JSON.stringify({
+            title : $("#title").val(),
+            content : $("#content").val(),
+            writer : $("#writer").val()
+        });
+        $.ajax({
+            url : "/board/write/",
+            type : "post",
+            data : jsonData,
+            contentType : "application/json; charset=utf-8",
+            //headers:{ "Content-Type": "application/json", "X-HTTP-Method-Override": "PUT"},
+            dataType : "json",
+            success : function() {
+                alert("저장 성공!");
+                location.href = "/board";
+            },
+            error : function(error) {
+                console.log(error);
+                alert("저장 실패!");
+                //location.href = "/board";
+            }
+        });
+    });*/
+
+    $(document).ready(function () {
+        $("#save").click(function () {
+            var Data = {
+                title: $("#title").val(),
+                content: $("#content").val(),
+                writer: $("#writer").val()
+            };
+            $.ajax({
+                url: "/board/write/",
+                type: "POST",
+                data: Data,
+                dataType: "text",
+                success: function () {
+                    alert("저장 성공!");
+                    location.href = "/board";
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert("저장 실패!");
+                    //location.href = "/board";
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>
