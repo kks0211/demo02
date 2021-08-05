@@ -23,17 +23,18 @@ public class BoardController {
     private final BoardService service;
 
     /*@GetMapping("")
-    public ModelAndView openBoardList() throws Exception {
+    public ModelAndView openBoardList(Criteria criteria) throws Exception {
         log.info("==========board List========");
         ModelAndView mv = new ModelAndView("/board/restBoardList");
-        List<BoardVO> list = service.getList();
+        log.info("list");
+        List<BoardVO> list = service.getList(criteria);
         mv.addObject("list", list);
         return mv;
     }*/
 
     @GetMapping("/write")
     public String registerGet() throws Exception {
-        return "/board/restBoardWrite";
+        return "/tboard/restBoardWrite";
     }
 
     /*@PostMapping("/write")

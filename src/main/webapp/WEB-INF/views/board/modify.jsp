@@ -112,10 +112,10 @@
 
                 formObj.empty();
 
-                formObj.append(pageNumTag);
+                /*formObj.append(pageNumTag);
                 formObj.append(amountTag);
                 formObj.append(keywordTag);
-                formObj.append(typeTag);
+                formObj.append(typeTag);*/
             }
 
             formObj.submit();
