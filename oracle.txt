@@ -1,3 +1,10 @@
+
+create user book_ex IDENTIFIED BY BOOK_EX
+dafault tablespace USERS
+TEMPORARY TABLESPACE TEMP;
+
+GRANT CONNECT, DBA TO BOOK_EX
+
 SELECT dbms_xdb.gethttpport() FROM dual;
 
 EXEC dbms_xdb.sethttpport(9090);
