@@ -3,10 +3,12 @@ package com.board.mapper;
 import com.board.config.RootConfig;
 import com.board.domain.BoardVO;
 import com.board.domain.Criteria;
+import com.board.test.DataSourceOracleTests;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -15,15 +17,16 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootConfig.class})
-@Log4j
 public class BoardMapperTest {
+
+    static final Logger log = LoggerFactory.getLogger(BoardMapperTest.class);
 
     @Setter(onMethod_ = @Autowired)
     private BoardMapper boardMapper;
 
     @Test
     public void testGetList() {
-        boardMapper.getList().forEach(board -> log.info(board));
+        boardMapper.getList().forEach(board -> log.info("board : {} ", board));
     }
 
     @Test
@@ -31,7 +34,7 @@ public class BoardMapperTest {
         BoardVO vo = BoardVO.builder().title("test1").content("test").writer("test1").build();
 
         boardMapper.insert(vo);
-        log.info(vo);
+        log.info("vo : {}" +vo);
     }
 
     @Test
@@ -39,14 +42,14 @@ public class BoardMapperTest {
         BoardVO vo = BoardVO.builder().title("test2").content("test2").writer("test12").build();
 
         boardMapper.insertSelectKey(vo);
-        log.info(vo);
+        log.info("vo : {}" +vo);
     }
 
     @Test
     public void testRead() {
 
         BoardVO vo = boardMapper.read(3L);
-        log.info(vo);
+        log.info("vo : {}" +vo);
     }
 
     @Test
@@ -58,18 +61,20 @@ public class BoardMapperTest {
     public void testUpdate() {
         BoardVO vo = BoardVO.builder().title("수정").content("수정").writer("수정").bno(4L).build();
         int result = boardMapper.update(vo);
-        log.info(result);
+        log.info("result : {}",result);
     }
 
     @Test
     public void testPaging(){
-        Criteria criteria = new Criteria();
-        criteria.setPageNum(3);
-        criteria.setAmount(10);
+        Criteria cri = new Criteria();
+        cri.setType("T");
+        cri.setKeyword("test");
+        cri.setPageNum(1);
+        cri.setAmount(10);
 
-        List<BoardVO> list = boardMapper.getListWithPaging(criteria);
+        List<BoardVO> list = boardMapper.getListWithPaging(cri);
 
-        list.forEach(board -> log.info(board));
+        list.forEach(board -> log.info("board : {}", board));
     }
 
 }

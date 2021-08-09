@@ -2,6 +2,7 @@ package com.board.service;
 
 import com.board.domain.BoardVO;
 import com.board.domain.Criteria;
+import com.board.domain.Search;
 
 import java.util.List;
 
@@ -16,5 +17,7 @@ public interface BoardService {
 
     //public List<BoardVO> getList();
 
-    public List<BoardVO> getList(Criteria criteria);
+    public List<BoardVO> getList(Criteria cri);
+
+    public int getTotalCount(Criteria cri);
 }

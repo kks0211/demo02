@@ -41,11 +41,18 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardVO> getList() {
         return boardMapper.getList();
     }*/
-    @Override
-    public List<BoardVO> getList(Criteria criteria) {
-        log.info("get List With Criteria : " + criteria);
 
-        return boardMapper.getListWithPaging(criteria);
+    @Override
+    public List<BoardVO> getList(Criteria cri) {
+        log.info("get List With Criteria : " + cri);
+
+        return boardMapper.getListWithPaging(cri);
+    }
+
+    @Override
+    public int getTotalCount(Criteria cri) {
+
+        return boardMapper.getTotalCount(cri);
     }
 
 }

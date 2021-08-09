@@ -25,7 +25,7 @@ public class BoardRestController {
             entity = new ResponseEntity<String>("success", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }
         return entity;
     }

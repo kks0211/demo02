@@ -2,6 +2,7 @@ package com.board.mapper;
 
 import com.board.domain.BoardVO;
 import com.board.domain.Criteria;
+import com.board.domain.Search;
 
 import java.util.List;
 
@@ -20,5 +21,7 @@ public interface BoardMapper {
 
     public int update(BoardVO vo);
 
-    public List<BoardVO> getListWithPaging(Criteria criteria);
+    public List<BoardVO> getListWithPaging(Search search);
+
+    public int getTotalCount(Criteria cri);
 }

@@ -3,6 +3,7 @@ package com.board.service;
 import com.board.config.RootConfig;
 import com.board.domain.BoardVO;
 import com.board.domain.Criteria;
+import com.board.domain.Search;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.junit.Test;
@@ -54,6 +55,6 @@ public class BoardServiceTest {
     public void getList() {
 
         // boardService.getList().forEach(vo -> log.info(vo));
-        boardService.getList(new Criteria(2,10)).forEach(vo -> log.info(vo));
+        boardService.getList(new Criteria(2, 10)).forEach(vo -> log.info(vo));
     }
 }
