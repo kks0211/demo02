@@ -2,15 +2,17 @@ package com.board.controller;
 
 import com.board.domain.BoardVO;
 import com.board.domain.Criteria;
-import com.board.domain.PageDTO;
-import com.board.domain.Search;
 import com.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Log4j
 @Controller
@@ -21,11 +23,11 @@ public class BoardController {
     private final BoardService service;
 
     /*@GetMapping("")
-    public ModelAndView openBoardList(Criteria cri) throws Exception {
+    public ModelAndView openBoardList(Criteria criteria) throws Exception {
         log.info("==========board List========");
         ModelAndView mv = new ModelAndView("/board/restBoardList");
         log.info("list");
-        List<BoardVO> list = service.getList(cri);
+        List<BoardVO> list = service.getList(criteria);
         mv.addObject("list", list);
         return mv;
     }*/
@@ -70,19 +72,13 @@ public class BoardController {
     }*/
 
     @GetMapping("/list")
-    public String list(Criteria cri, Model model) {
-        log.info("list : " + cri);
-        int total = service.getTotalCount(cri);
-        log.info("list total : " + total);
-
-        model.addAttribute("list", service.getList(cri));
-        model.addAttribute("pageMaker", new PageDTO(cri, total));
-        return "/board/list";
+    public void list(Criteria criteria, Model model) {
+        log.info("list");
+        model.addAttribute("list", service.getList(criteria));
     }
 
     @GetMapping("/register")
-    public String register() {
-        return "/board/register";
+    public void register() {
     }
 
     @PostMapping("/register")
@@ -94,49 +90,31 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @GetMapping({"/get"})
-    public String get(@RequestParam("bno") Long bno, Model model, @ModelAttribute("cri") Criteria cri) {
+    @GetMapping({"/get", "/modify"})
+    public void get(@RequestParam("bno") Long bno, Model model) {
         log.info("/get or /modiry");
         model.addAttribute("board", service.read(bno));
-        return "/board/get";
     }
 
-    @GetMapping({"/modify"})
-    public String modify(@RequestParam("bno") Long bno, Model model, @ModelAttribute("cri") Criteria cri) {
-        log.info("/get or /modiry");
-        model.addAttribute("board", service.read(bno));
-        return "/board/modify";
-    }
 
     @PostMapping("/modify")
-    public String modify(BoardVO vo, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
+    public String modify(BoardVO vo, RedirectAttributes rttr) {
         log.info("modify : " + vo);
 
         if (service.modify(vo)) {
             rttr.addFlashAttribute("result", "success");
         }
-
-        /*rttr.addFlashAttribute("pageNum", cri.getPageNum());
-        rttr.addFlashAttribute("amount", cri.getAmount());
-        rttr.addFlashAttribute("type", cri.getType());
-        rttr.addFlashAttribute("keyword", cri.getKeyword());*/
-
-        return "redirect:/board/list" + cri.getListLink();
+        return "redirect:/board/list";
 
     }
 
     @PostMapping("/remove")
-    public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
+    public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr) {
         log.info("remove ---- " + bno);
         if (service.remove(bno)) {
             rttr.addFlashAttribute("result", "success");
         }
-        /*rttr.addFlashAttribute("pageNum", cri.getPageNum());
-        rttr.addFlashAttribute("amount", cri.getAmount());
-        rttr.addFlashAttribute("type", cri.getType());
-        rttr.addFlashAttribute("keyword", cri.getKeyword());*/
-
-        return "redirect:/board/list" + cri.getListLink();
+        return "redirect:/board/list";
     }
 
 
