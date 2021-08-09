@@ -7,9 +7,14 @@ import javax.servlet.ServletRegistration;
 
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    @Override
+    /*@Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[]{RootConfig.class};
+    }*/
+
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class[]{RootConfigDev.class, RootConfigReal.class};
     }
 
     @Override

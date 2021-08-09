@@ -38,6 +38,7 @@
                         Button
                     </button>
                     <button type="reset" class="btn btn-default">Reset Button</button>
+                    <button data-oper='list' class="btn btn-info">List</button>
                 </form>
 
             </div>
@@ -49,4 +50,17 @@
     <!-- end panel -->
 </div>
 <!-- /.row -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var operForm = $("#form");
+
+        $("button[data-oper='list']").on("click", function (e) {
+
+            operForm.attr("action", "/board/list")
+            operForm.submit();
+
+        });
+    });
+</script>
 <%@include file="../includes/footer.jsp" %>

@@ -98,23 +98,23 @@
                 <div class='pull-right'>
                     <ul class="pagination">
 
-                        <%--             <c:if test="${pageMaker.prev}">
-              <li class="paginate_button previous"><a href="#">Previous</a>
-              </li>
-            </c:if>
+                        <%--<c:if test="${pageMaker.prev}">
+                            <li class="paginate_button previous"><a href="#">Previous</a>
+                            </li>
+                        </c:if>
 
-            <c:forEach var="num" begin="${pageMaker.startPage}"
-              end="${pageMaker.endPage}">
-              <li class="paginate_button"><a href="#">${num}</a></li>
-            </c:forEach>
+                        <c:forEach var="num" begin="${pageMaker.startPage}"
+                                   end="${pageMaker.endPage}">
+                            <li class="paginate_button"><a href="#">${num}</a></li>
+                        </c:forEach>
 
-            <c:if test="${pageMaker.next}">
-              <li class="paginate_button next"><a href="#">Next</a></li>
-            </c:if> --%>
+                        <c:if test="${pageMaker.next}">
+                            <li class="paginate_button next"><a href="#">Next</a></li>
+                        </c:if>--%>
 
                         <c:if test="${pageMaker.prev}">
-                            <li class="paginate_button previous"><a
-                                    href="${pageMaker.startPage -1}">Previous</a></li>
+                            <li class="paginate_button previous">
+                                <a href="${pageMaker.startPage -1}">Previous</a></li>
                         </c:if>
 
                         <c:forEach var="num" begin="${pageMaker.startPage}"
@@ -125,8 +125,8 @@
                         </c:forEach>
 
                         <c:if test="${pageMaker.next}">
-                            <li class="paginate_button next"><a
-                                    href="${pageMaker.endPage +1 }">Next</a></li>
+                            <li class="paginate_button next">
+                                <a href="${pageMaker.endPage +1 }">Next</a></li>
                         </c:if>
 
 
@@ -138,11 +138,8 @@
             <form id='actionForm' action="/board/list" method='get'>
                 <input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
                 <input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
-
-                <input type='hidden' name='type'
-                       value='<c:out value="${ pageMaker.cri.type }"/>'> <input
-                    type='hidden' name='keyword'
-                    value='<c:out value="${ pageMaker.cri.keyword }"/>'>
+                <input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'>
+                <input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
             </form>
 
 
@@ -236,11 +233,7 @@
                         function (e) {
 
                             e.preventDefault();
-                            actionForm
-                                .append("<input type='hidden' name='bno' value='"
-                                    + $(this).attr(
-                                        "href")
-                                    + "'>");
+                            actionForm.append("<input type='hidden' name='bno' value='" + $(this).attr("href") + "'>");
                             actionForm.attr("action", "/board/get");
                             actionForm.submit();
                         });
