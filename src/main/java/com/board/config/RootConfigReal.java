@@ -5,16 +5,15 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
 @Profile("real")
 @Configuration
-@ComponentScan(basePackages = {"com.board.service", "com.board.dao"})
+@EnableAspectJAutoProxy
+@ComponentScan(basePackages = {"com.board.service"})
 @MapperScan(basePackages = {"com.board.mapper"})
 public class RootConfigReal {
 
@@ -30,6 +29,11 @@ public class RootConfigReal {
 
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
         return dataSource;
+    }
+
+    @Bean
+    public DataSourceTransactionManager txManager() {
+        return new DataSourceTransactionManager(datasource());
     }
 
     @Bean

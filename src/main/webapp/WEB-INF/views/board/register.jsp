@@ -51,16 +51,28 @@
 </div>
 <!-- /.row -->
 <script type="text/javascript">
+
     $(document).ready(function () {
+
+        /*$("#regist").click(function () {
+            var Data = {
+                title: $("#title").val(),
+                content: $("#content").val(),
+                writer: $("#writer").val()
+            };
+            commonAjax("post", "/board/register", Data)
+
+        });*/
 
         var operForm = $("#form");
 
         $("button[data-oper='list']").on("click", function (e) {
-
+            commonAjax("get", "/board/list")
             operForm.attr("action", "/board/list")
             operForm.submit();
-
         });
+
     });
+
 </script>
 <%@include file="../includes/footer.jsp" %>

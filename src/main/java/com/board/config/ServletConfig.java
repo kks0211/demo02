@@ -1,7 +1,5 @@
 package com.board.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,15 +15,11 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.spring4.ISpringTemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,13 +29,14 @@ import java.util.List;
 @ComponentScan(basePackages = {"com.board.controller"})
 public class ServletConfig implements WebMvcConfigurer {
 
-    /*@Bean
+    @Bean
     public ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setTemplateMode("HTML5");
+        //templateResolver.setTemplateMode("HTML5");
         templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
-        //templateResolver.setTemplateMode(TemplateMode.HTML);
+
+        templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCharacterEncoding("utf-8");
         templateResolver.setCacheable(false);
 
@@ -61,37 +56,38 @@ public class ServletConfig implements WebMvcConfigurer {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding("utf-8");
-        viewResolver.setOrder(1);
+        //viewResolver.setOrder(1);
 
-        //viewResolver.setViewNames(new String[]{"thymeleaf/*"});
+        //viewResolver.setViewNames(new String[]{"*.html"});
+        viewResolver.setViewNames(new String[]{"/tboard/*"});
 
         return viewResolver;
-    }*/
+    }
 
-    /*@Bean
+    @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".jsp");
-        resolver.setViewNames("jsp/*");
-        resolver.setOrder(0);
+        resolver.setViewNames("/board/*");
+        //resolver.setViewNames("*.jsp");
+        //resolver.setOrder(2);
 
         return resolver;
-    }*/
-
+    }
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        //configurer.enable();
+        configurer.enable();
     }
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        InternalResourceViewResolver bean = new InternalResourceViewResolver();
+        /*InternalResourceViewResolver bean = new InternalResourceViewResolver();
         bean.setViewClass(JstlView.class);
         bean.setPrefix("/WEB-INF/views/");
         bean.setSuffix(".jsp");
-        registry.viewResolver(bean);
+        registry.viewResolver(bean);*/
     }
 
     @Override

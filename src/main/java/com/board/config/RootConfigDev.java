@@ -5,20 +5,22 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 
 @Profile("dev")
 @Configuration
-@ComponentScan(basePackages = {"com.board.service", "com.board.dao"})
+@EnableAspectJAutoProxy
+@ComponentScan(basePackages = {"com.board.service"})
 @MapperScan(basePackages = {"com.board.mapper"})
 public class RootConfigDev {
 
-    /*@Bean
+    /*
+    @Bean
     public DataSource datasourceDev() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -30,15 +32,15 @@ public class RootConfigDev {
 
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
         return dataSource;
-    }*/
+    }
+    */
 
     @Bean
     public DataSource datasourceDev() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName("org.h2.Driver");
-        //hikariConfig.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
-        //hikariConfig.setJdbcUrl("jdbc:log4jdbc:mysql://127.0.0.1:3306/book?serverTimezone=UTC&useSSL=false");
-        hikariConfig.setJdbcUrl("jdbc:h2:mem://localhost/~/book");
+        hikariConfig.setJdbcUrl("jdbc:h2:mem://localhost/~/test;Mode=Oracle");
+        //hikariConfig.setJdbcUrl("jdbc:h2:tcp://localhost/~/test;Mode=Oracle");
         hikariConfig.setUsername("root");
         hikariConfig.setPassword("root");
 
@@ -47,9 +49,22 @@ public class RootConfigDev {
     }
 
     @Bean
+    public DataSource h2DataSource() {
+        return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).addScript("/sql/data.sql").build();
+    }
+
+    @Bean
+    public DataSourceTransactionManager txManager() {
+        return new DataSourceTransactionManager(datasourceDev());
+    }
+
+    @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(datasourceDev());
+        sqlSessionFactoryBean.setDataSource(h2DataSource());
+
         return (SqlSessionFactory) sqlSessionFactoryBean.getObject();
     }
+
 }

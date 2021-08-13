@@ -2,8 +2,9 @@
     pageEncoding="UTF-8"%>
      </div>
         <!-- /#page-wrapper -->
+    <script src="/resources/js/commonAjax.js"></script>
 
-    <!-- /#wrapper -->
+<!-- /#wrapper -->
 
     <!-- jQuery 주석처리 -->
 <!--     <script src="/resources/vendor/jquery/jquery.min.js"></script> -->

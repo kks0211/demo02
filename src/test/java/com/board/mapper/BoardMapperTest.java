@@ -1,6 +1,7 @@
 package com.board.mapper;
 
 import com.board.config.RootConfig;
+import com.board.config.RootConfigDev;
 import com.board.domain.BoardVO;
 import com.board.domain.Criteria;
 import com.board.test.DataSourceOracleTests;
@@ -10,13 +11,15 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {RootConfig.class})
+@ContextConfiguration(classes = {RootConfigDev.class})
+@ActiveProfiles("dev")
 public class BoardMapperTest {
 
     static final Logger log = LoggerFactory.getLogger(BoardMapperTest.class);
@@ -52,7 +55,7 @@ public class BoardMapperTest {
         log.info("vo : {}" +vo);
     }
 
-    @Test
+    //@Test
     public void testDelete() {
         log.info("Delete Result : " + boardMapper.delete(3L));
     }
