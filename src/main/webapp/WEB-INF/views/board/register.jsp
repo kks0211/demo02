@@ -67,7 +67,7 @@
         var operForm = $("#form");
 
         $("button[data-oper='list']").on("click", function (e) {
-            commonAjax("get", "/board/list")
+            //commonAjax("get", "/board/list")
             operForm.attr("action", "/board/list")
             operForm.submit();
         });

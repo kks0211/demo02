@@ -1,7 +1,6 @@
 package com.board.test;
 
 import com.board.config.RootConfig;
-import com.board.config.RootConfigReal;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

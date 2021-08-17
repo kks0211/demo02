@@ -16,7 +16,7 @@
 
 
 
-1. RootConfig(applicationContext.xml) 와 ServletConfig(servlet-context.xml) 에서 왜 컴포넌트 스캔을 다르게 설정하는지?
+1. RootConfig(applicationContext.xml) 와 ServletConfig(dispatcher-servlet.xml, servlet-context.xml) 에서 왜 컴포넌트 스캔을 다르게 설정하는지?
 
 * context 란
 Bean의 확장 버전으로, Spring이 Bean을 좀 더 다루기 쉽도록 기능들이 추가된 공간이다.
@@ -123,3 +123,156 @@ static 메소드에서는 static 변수만 접근이 가능하기 때문에 사�
 질문
  - H2 인메모리 DB 테스트 할때 @Test 한번 할때도 데이터가 없어지는지
  -
+
+ 스프링 시큐리티
+ - Spring Security는 Spring 기반의 애플리케이션의 보안(인증과 권한, 인가 등)을 담당하는 스프링 하위 프레임워크이다.
+ Spring Security는 '인증'과 '권한'에 대한 부분을 Filter 흐름에 따라 처리하고 있다.
+ Filter는 Dispatcher Servlet으로 가기 전에 적용되므로 가장 먼저 URL 요청을 받지만,
+ Interceptor는 Dispatcher와 Controller사이에 위치한다는 점에서 적용 시기의 차이가 있다.
+ Spring Security는 보안과 관련해서 체계적으로 많은 옵션을 제공해주기 때문에 개발자 입장에서는 일일이 보안관련 로직을 작성하지 않아도 된다는 장점이 있다.
+
+
+
+[ SecurityContextHolder ]
+SecurityContextHolder는 보안 주체의 세부 정보를 포함하여 응용프래그램의 현재 보안 컨텍스트에 대한 세부 정보가 저장된다.
+SecurityContextHolder는 기본적으로 SecurityContextHolder.MODE_INHERITABLETHREADLOCAL 방법과SecurityContextHolder.MODE_THREADLOCAL 방법을 제공한다.
+
+
+
+[ SecurityContext ]
+Authentication을 보관하는 역할을 하며, SecurityContext를 통해 Authentication 객체를 꺼내올 수 있다.
+
+
+
+[ Authentication ]
+Authentication는 현재 접근하는 주체의 정보와 권한을 담는 인터페이스이다.
+Authentication 객체는 Security Context에 저장되며, SecurityContextHolder를 통해 SecurityContext에 접근하고, SecurityContext를 통해 Authentication에 접근할 수 있다.
+
+
+[ UsernamePasswordAuthenticationToken ]
+UsernamePasswordAuthenticationToken은 Authentication을 implements한 AbstractAuthenticationToken의 하위 클래스로,
+User의 ID가 Principal 역할을 하고, Password가 Credential의 역할을 한다. UsernamePasswordAuthenticationToken의 첫 번째 생성자는 인증 전의 객체를 생성하고,
+두번째 생성자는 인증이 완려된 객체를 생성한다.
+
+
+
+[ AuthenticationProvider ]
+AuthenticationProvider에서는 실제 인증에 대한 부분을 처리하는데, 인증 전의 Authentication객체를 받아서 인증이 완료된 객체를 반환하는 역할을 한다.
+아래와 같은 AuthenticationProvider 인터페이스를 구현해서 Custom한 AuthenticationProvider을 작성해서 AuthenticationManager에 등록하면 된다.
+
+
+
+[ Authentication Manager ]
+인증에 대한 부분은 SpringSecurity의 AuthenticatonManager를 통해서 처리하게 되는데, 실질적으로는 AuthenticationManager에 등록된 AuthenticationProvider에 의해 처리된다.
+인증이 성공하면 2번째 생성자를 이용해 인증이 성공한(isAuthenticated=true) 객체를 생성하여 Security Context에 저장한다.
+그리고 인증 상태를 유지하기 위해 세션에 보관하며, 인증이 실패한 경우에는 AuthenticationException를 발생시킨다.
+
+AuthenticationManager를 implements한 ProviderManager는 실제 인증 과정에 대한 로직을 가지고 있는 AuthenticaionProvider를 List로 가지고 있으며,
+ProividerManager는 for문을 통해 모든 provider를 조회하면서 authenticate 처리를 한다.
+
+위에서 설명한 ProviderManager에 우리가 직접 구현한 CustomAuthenticationProvider를 등록하는 방법은 WebSecurityConfigurerAdapter를 상속해 만든 SecurityConfig에서 할 수 있다.
+WebSecurityConfigurerAdapter의 상위 클래스에서는 AuthenticationManager를 가지고 있기 때문에 우리가 직접 만든 CustomAuthenticationProvider를 등록할 수 있다.
+
+
+
+[ UserDetails ]
+인증에 성공하여 생성된 UserDetails 객체는 Authentication객체를 구현한 UsernamePasswordAuthenticationToken을 생성하기 위해 사용된다.
+UserDetails 인터페이스를 살펴보면 아래와 같이 정보를 반환하는 메소드를 가지고 있다.
+UserDetails 인터페이스의 경우 직접 개발한 UserVO 모델에 UserDetails를 implements하여 이를 처리하거나 UserDetailsVO에 UserDetails를 implements하여 처리할 수 있다.
+
+
+
+[ UserDetailsService ]
+UserDetailsService 인터페이스는 UserDetails 객체를 반환하는 단 하나의 메소드를 가지고 있는데,
+일반적으로 이를 구현한 클래스의 내부에 UserRepository를 주입받아 DB와 연결하여 처리한다. UserDetails 인터페이스는 아래와 같다.
+
+
+
+[ Password Encoding ]
+AuthenticationManagerBuilder.userDetailsService().passwordEncoder() 를 통해 패스워드 암호화에 사용될 PasswordEncoder 구현체를 지정할 수 있다.
+
+
+
+[ GrantedAuthority ]
+GrantAuthority는 현재 사용자(principal)가 가지고 있는 권한을 의미한다. ROLE_ADMIN나 ROLE_USER와 같이 ROLE_*의 형태로 사용하며,
+보통 "roles" 이라고 한다. GrantedAuthority 객체는 UserDetailsService에 의해 불러올 수 있고, 특정 자원에 대한 권한이 있는지를 검사하여 접근 허용 여부를 결정한다.
+
+
+
+
+======================Spring Security ==============================
+
+1. 필터를 이용해 스프링 동작 하도록 설정 (web.xml)
+    - springSecurityFilterChain (filter)
+
+2. 접근제한 설정 (securityContext.xml)
+
+3. UserDetailsService 를 통해 인증과 권한을 처리함.
+
+4. PasswordEncoder 존재
+
+5. AccessDeniedHandler
+    > Controller 에서 처리 (CustomAccessDeniedHandler 를 구현 가능 implement AccessDeniedHandler !)
+
+6. custom Login Page (CommonController 에서서 처리
+    > CSRF 토큰 (사이트간 위조방지)  세션을 통해 보관 스프링 시큐리티에서는 사용을 안하거나 쿠키로 관리
+
+7. AuthenticationSuccessHandler (로그인 성공 시)
+    > security-context 에 bean으로 등록
+
+8. LogoutSuccessHandler
+    > security-context 에 bean으로 등록
+    > CommonController 에서 처리
+
+=========================================================================================================
+
+
+
+1. 스프링 시큐리티 란 ?  https://sjh836.tistory.com/165, https://okky.kr/article/382738
+
+> 스프링 기반의 애플리케이션 보안 (인증과 권한, 인가등) 을 처리하는 스프링 하위 프레임워크 !
+> 서블릿 필터와 이들로 구성된 필터체인으로 구성됨
+
+
+접근 주체 : 보호된 대상에 접근하는 유저
+인증 : 현재 유저가 누구인지 확인
+인가 : 현재 유저가 어떤 서비스, 페이지에 접근 할수 있는 권한이 있는지 확인
+권한 : 인증된 주체가 애플리케이션의 동작을 수행할 수 있도록 허락
+
+
+인증은 애플리케이션의 작업을 수행할 수 있는 주체(사용자)라고 주장할 수 있는 것을 말하며
+권한은 인증된 주체가 애플리케이션의 동작을 수행할 수 있도록 허락되있는지를 결정하는 것을 말합니다.
+따라서, 권한 승인이 필요한 부분으로 접근하려면 인증 과정을 통해 주체가 증명 되어야만 한다는 것입니다.
+
+
+원래 XML 기반의 설정에서는 web.xml에 org.springframework.web.filter.DelegatingFilterProxy라는 springSecurityFilterChain을 등록하는 것으로 시작합니다만,
+자바 기반의 설정에서는 WebSecurityConfigurerAdapter를 상속받은 클래스에 @EnableWebSecurity 어노테이션을 명시하는 것만으로도 springSecurityFilterChain가 자동으로 포함되어집니다.
+
+그리고 포함된 springSecurityFilterChain을 등록하기 위해서는 AbstractSecurityWebApplicationInitializer를 상속받은 WebApplicationInitializer class를 만들어두면 됩니다.
+
+
+
+=====================================================================================
+
+Java 설정
+> SecurityIntializer extends AbstractSecurityWebApplicationInitializer 추가
+
+// 로그인 페이지 관련 설정
+> SecurityConfig extends WebSecurityConfigureAdapter 추가
+    - configure(HttpSecurity http) 추가
+
+> WebConfig에 SecuriyConfig.class 추가
+
+// 로그인 성공 처리
+> CustomLoginSuccessHandler.java 추가 (SecurityConfig에도 추가 - AuthenticationSuccessHandler 추가  )
+    - configure(HttpSecurity http) 추가
+
+// 로그아웃 처리
+> configure(HttpSecurity http) 추가
+
+//PasswordEncoder 지정
+> SecurityConfig (PasswordEncoder bean 추가)
+
+//
+> CustomDetailsService 설정
+

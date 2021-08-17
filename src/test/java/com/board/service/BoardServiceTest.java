@@ -32,7 +32,8 @@ public class BoardServiceTest {
 
     @Test
     public void read() {
-        BoardVO vo = BoardVO.builder().bno(5L).build();
+        BoardVO vo = new BoardVO();
+        vo.setBno(5L);
         log.info(boardService.read(vo.getBno()));
     }
 

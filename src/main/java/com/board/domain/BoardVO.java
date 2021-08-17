@@ -6,10 +6,8 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
+@NoArgsConstructor
 public class BoardVO {
     private Long bno;
     private String title;
@@ -18,4 +16,11 @@ public class BoardVO {
     private Date regdate;
     private Date updatedate;
     private int replyCnt;
+
+    @Builder
+    public BoardVO(String title, String content, String writer) {
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+    }
 }

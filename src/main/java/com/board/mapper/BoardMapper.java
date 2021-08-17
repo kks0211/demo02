@@ -21,6 +21,7 @@ public interface BoardMapper {
     public int delete(Long bno);
 
     public int update(BoardVO vo);
+    public int update(BoardVO vo, Long bno);
 
     public List<BoardVO> getListWithPaging(Search search);
 

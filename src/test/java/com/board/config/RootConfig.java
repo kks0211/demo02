@@ -2,41 +2,41 @@ package com.board.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.Setter;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.*;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 
-@Profile("dev")
 @Configuration
-@EnableAspectJAutoProxy
 @ComponentScan(basePackages = {"com.board.service"})
 @MapperScan(basePackages = {"com.board.mapper"})
-public class RootConfigDev {
+@Profile(value = "test")
+public class RootConfig {
 
-    /*
+    @Setter(onMethod_ = @Autowired)
+    private ApplicationContext context;
+
     @Bean
-    public DataSource datasourceDev() {
-        HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        //hikariConfig.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
-        //hikariConfig.setJdbcUrl("jdbc:log4jdbc:mysql://127.0.0.1:3306/book?serverTimezone=UTC&useSSL=false");
-        hikariConfig.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/book?serverTimezone=UTC&useSSL=false");
-        hikariConfig.setUsername("root");
-        hikariConfig.setPassword("root");
-
-        HikariDataSource dataSource = new HikariDataSource(hikariConfig);
-        return dataSource;
+    public DataSource dataSource() {
+        return new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2)
+                .setName("test;MODE=Oracle")
+                .addScripts("/sql/data.sql")
+                .build();
     }
-    */
 
-    @Bean
-    public DataSource datasourceDev() {
+    /*@Bean
+    public DataSource dataSource() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName("org.h2.Driver");
         hikariConfig.setJdbcUrl("jdbc:h2:mem://localhost/~/test;Mode=Oracle");
@@ -51,20 +51,15 @@ public class RootConfigDev {
     @Bean
     public DataSource h2DataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).addScript("/sql/data.sql").build();
-    }
-
-    @Bean
-    public DataSourceTransactionManager txManager() {
-        return new DataSourceTransactionManager(datasourceDev());
-    }
+    }*/
 
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-        sqlSessionFactoryBean.setDataSource(datasourceDev());
-        sqlSessionFactoryBean.setDataSource(h2DataSource());
-
-        return (SqlSessionFactory) sqlSessionFactoryBean.getObject();
+        sqlSessionFactoryBean.setDataSource(dataSource());
+        sqlSessionFactoryBean.setMapperLocations(context.getResources("classpath:/mapper/*.xml"));
+        sqlSessionFactoryBean.setTypeAliasesPackage("com.board.domain");
+        return sqlSessionFactoryBean.getObject();
     }
 
 }

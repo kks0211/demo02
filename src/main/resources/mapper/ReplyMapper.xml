@@ -7,7 +7,7 @@
         values (seq_reply.nextval, #{bno}, #{reply}, #{replyer})
     </insert>
 
-    <select id="read" resultType="com.board.domain.ReplyVO">
+    <select id="read" resultType="ReplyVO">
         select *
         from tbl_reply
         where rno = #{rno}
@@ -26,7 +26,7 @@
         where rno = #{rno}
     </update>
 
-    <select id="getListWithPaging" resultType="com.board.domain.ReplyVO">
+    <select id="getListWithPaging" resultType="ReplyVO">
     <![CDATA[
         select rno, bno, reply, replyer, replydate, updatedate
         from (

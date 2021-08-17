@@ -1,6 +1,6 @@
 package com.board.controller;
 
-import com.board.config.RootConfigReal;
+import com.board.config.RootConfig;
 import com.board.config.ServletConfig;
 import com.board.domain.SampleVO;
 import com.google.gson.Gson;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {RootConfigReal.class, ServletConfig.class})
+@ContextConfiguration(classes = {RootConfig.class, ServletConfig.class})
 @ActiveProfiles("real")
 public class SampleControllerTest {
 

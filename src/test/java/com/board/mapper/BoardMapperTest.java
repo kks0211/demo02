@@ -1,31 +1,38 @@
 package com.board.mapper;
 
-import com.board.config.RootConfig;
-import com.board.config.RootConfigDev;
+import com.board.config.TestConfiguration;
 import com.board.domain.BoardVO;
 import com.board.domain.Criteria;
-import com.board.test.DataSourceOracleTests;
 import lombok.Setter;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {RootConfigDev.class})
-@ActiveProfiles("dev")
+@TestConfiguration
 public class BoardMapperTest {
-
     static final Logger log = LoggerFactory.getLogger(BoardMapperTest.class);
 
     @Setter(onMethod_ = @Autowired)
     private BoardMapper boardMapper;
+
+    @BeforeEach
+    void beforeEach() {
+        String title = "test title";
+        String content = "test content";
+        String writer = "test writer";
+
+        BoardVO board = BoardVO.builder()
+                .title(title)
+                .content(content)
+                .writer(writer)
+                .build();
+
+        boardMapper.insertSelectKey(board);
+    }
 
     @Test
     public void testGetList() {
@@ -34,10 +41,14 @@ public class BoardMapperTest {
 
     @Test
     public void testInsert() {
-        BoardVO vo = BoardVO.builder().title("test1").content("test").writer("test1").build();
+        BoardVO vo = BoardVO.builder()
+                .title("test1")
+                .content("test")
+                .writer("test1")
+                .build();
 
+        log.info("vo : {}", vo);
         boardMapper.insert(vo);
-        log.info("vo : {}" +vo);
     }
 
     @Test
@@ -45,14 +56,14 @@ public class BoardMapperTest {
         BoardVO vo = BoardVO.builder().title("test2").content("test2").writer("test12").build();
 
         boardMapper.insertSelectKey(vo);
-        log.info("vo : {}" +vo);
+        log.info("vo : {}", vo);
     }
 
     @Test
     public void testRead() {
 
         BoardVO vo = boardMapper.read(3L);
-        log.info("vo : {}" +vo);
+        log.info("vo : {}", vo);
     }
 
     //@Test
@@ -62,13 +73,14 @@ public class BoardMapperTest {
 
     @Test
     public void testUpdate() {
-        BoardVO vo = BoardVO.builder().title("수정").content("수정").writer("수정").bno(4L).build();
+        BoardVO vo = BoardVO.builder().title("수정").content("수정").writer("수정").build();
+        vo.setBno(4L);
         int result = boardMapper.update(vo);
-        log.info("result : {}",result);
+        log.info("result : {}", result);
     }
 
     @Test
-    public void testPaging(){
+    public void testPaging() {
         Criteria cri = new Criteria();
         cri.setType("T");
         cri.setKeyword("test");

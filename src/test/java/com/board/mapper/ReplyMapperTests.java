@@ -1,7 +1,6 @@
 package com.board.mapper;
 
-import com.board.config.RootConfigDev;
-import com.board.config.RootConfigReal;
+import com.board.config.RootConfig;
 import com.board.domain.Criteria;
 import com.board.domain.ReplyVO;
 import lombok.Setter;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {RootConfigReal.class, RootConfigDev.class})
+@ContextConfiguration(classes = {RootConfig.class})
 @ActiveProfiles("dev")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ReplyMapperTests {

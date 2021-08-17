@@ -69,8 +69,8 @@ public class ServletConfig implements WebMvcConfigurer {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".jsp");
-        resolver.setViewNames("/board/*");
-        //resolver.setViewNames("*.jsp");
+        //resolver.setViewNames("/board/*");
+        resolver.setViewNames("/*");
         //resolver.setOrder(2);
 
         return resolver;
