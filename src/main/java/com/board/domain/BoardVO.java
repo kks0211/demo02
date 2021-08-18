@@ -23,4 +23,6 @@ public class BoardVO {
         this.content = content;
         this.writer = writer;
     }
+
+
 }

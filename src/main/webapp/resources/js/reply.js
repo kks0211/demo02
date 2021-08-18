@@ -39,32 +39,60 @@ var replyService = (function() {
 //			}
 //		});
 //	}
-	
-	
+
+
 
 	function getList(param, callback, error) {
 
-	    var bno = param.bno;
-	    var page = param.page || 1;
-	    
-	    $.getJSON("/replies/pages/" + bno + "/" + page + ".json",
-	        function(data) {
-	          if (callback) {
-	            //callback(data); // 댓글 목록만 가져오는 경우 
-	            callback(data.replyCnt, data.list); //댓글 숫자와 목록을 가져오는 경우 
-	          }
-	        }).fail(function(xhr, status, err) {
-	      if (error) {
-	        error();
-	      }
-	    });
-	  }
+		var bno = param.bno;
+		var page = param.page || 1;
 
-	
-	function remove(rno, callback, error) {
+		$.getJSON("/replies/pages/" + bno + "/" + page + ".json",
+			function(data) {
+
+				if (callback) {
+					//callback(data); // 댓글 목록만 가져오는 경우
+					callback(data.replyCnt, data.list); //댓글 숫자와 목록을 가져오는 경우
+				}
+			}).fail(function(xhr, status, err) {
+			if (error) {
+				error();
+			}
+		});
+	}
+
+
+//	function remove(rno, callback, error) {
+//		$.ajax({
+//			type : 'delete',
+//			url : '/replies/' + rno,
+//			success : function(deleteResult, status, xhr) {
+//				if (callback) {
+//					callback(deleteResult);
+//				}
+//			},
+//			error : function(xhr, status, er) {
+//				if (error) {
+//					error(er);
+//				}
+//			}
+//		});
+//	}
+
+	function remove(rno, replyer, callback, error) {
+
+
+		console.log("--------------------------------------");
+		console.log(JSON.stringify({rno:rno, replyer:replyer}));
+
 		$.ajax({
 			type : 'delete',
 			url : '/replies/' + rno,
+
+			data:  JSON.stringify({rno:rno, replyer:replyer}),
+
+			contentType: "application/json; charset=utf-8",
+
 			success : function(deleteResult, status, xhr) {
 				if (callback) {
 					callback(deleteResult);
@@ -77,6 +105,7 @@ var replyService = (function() {
 			}
 		});
 	}
+
 
 	function update(reply, callback, error) {
 
@@ -131,7 +160,7 @@ var replyService = (function() {
 			var ss = dateObj.getSeconds();
 
 			return [ (hh > 9 ? '' : '0') + hh, ':', (mi > 9 ? '' : '0') + mi,
-					':', (ss > 9 ? '' : '0') + ss ].join('');
+				':', (ss > 9 ? '' : '0') + ss ].join('');
 
 		} else {
 			var yy = dateObj.getFullYear();
@@ -139,9 +168,10 @@ var replyService = (function() {
 			var dd = dateObj.getDate();
 
 			return [ yy, '/', (mm > 9 ? '' : '0') + mm, '/',
-					(dd > 9 ? '' : '0') + dd ].join('');
+				(dd > 9 ? '' : '0') + dd ].join('');
 		}
 	}
+	;
 
 	return {
 		add : add,

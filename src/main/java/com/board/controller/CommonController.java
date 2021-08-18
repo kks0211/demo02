@@ -28,7 +28,7 @@ public class CommonController {
         if (logout != null) {
             model.addAttribute("logout", "logout!!");
         }
-        return "/customLogin";
+        return "customLogin.jsp_back";
     }
 
     @GetMapping("/customLogout")

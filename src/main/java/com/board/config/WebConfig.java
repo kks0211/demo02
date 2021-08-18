@@ -2,6 +2,7 @@ package com.board.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
 import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
@@ -33,7 +34,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
 
-        return new Filter[] { characterEncodingFilter };
+        return new Filter[]{characterEncodingFilter};
     }
 
 }

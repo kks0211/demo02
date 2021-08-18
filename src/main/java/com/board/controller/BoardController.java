@@ -7,6 +7,7 @@ import com.board.domain.Search;
 import com.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -86,7 +87,9 @@ public class BoardController {
     }
 
     @PostMapping("/register")
+    @PreAuthorize("isAuthenticated()")
     public String register(BoardVO vo, RedirectAttributes rttr) {
+
         log.info("register : " + vo);
         service.regist(vo);
 
@@ -108,6 +111,7 @@ public class BoardController {
         return "/board/modify";
     }
 
+    @PreAuthorize("principal.username == #vo.writer")
     @PostMapping("/modify")
     public String modify(BoardVO vo, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
         log.info("modify : " + vo);
@@ -125,8 +129,9 @@ public class BoardController {
 
     }
 
+    @PreAuthorize("principal.username == #writer")
     @PostMapping("/remove")
-    public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
+    public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri, String writer) {
         log.info("remove ---- " + bno);
         if (service.remove(bno)) {
             rttr.addFlashAttribute("result", "success");

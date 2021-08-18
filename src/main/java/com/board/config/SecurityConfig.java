@@ -1,9 +1,8 @@
 package com.board.config;
 
-import javax.sql.DataSource;
-
 import com.board.security.CustomLoginSuccessHandler;
 import com.board.security.CustomUserDetailsService;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +17,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-
-import lombok.Setter;
-import lombok.extern.log4j.Log4j;
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@Log4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Setter(onMethod_ = {@Autowired})
@@ -36,10 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // in custom userdetails
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.userDetailsService(customUserService()).passwordEncoder(passwordEncoder());
     }
 
@@ -100,6 +94,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         repo.setDataSource(dataSource);
         return repo;
     }
-
 
 }
