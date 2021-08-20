@@ -63,7 +63,7 @@ public class ReplyController {
     @RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH}, value = "/{rno}", consumes = "application/json", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> update(@PathVariable("rno") Long rno, @RequestBody ReplyVO vo) {
         log.info("vo : {}", vo);
-        log.info("rno : {}" + rno);
+        log.info("rno : {}", rno);
         vo.setBno(rno);
 
         return replyService.modify(vo) == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

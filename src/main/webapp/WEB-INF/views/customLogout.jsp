@@ -54,8 +54,7 @@
                             <!-- Change this to a button or input when using this as a form -->
                             <a href="index.html" class="btn btn-lg btn-success btn-block">Logout</a>
                         </fieldset>
-                        <input type="hidden" name="${_csrf.parameterName}"
-                               value="${_csrf.token}"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
                 </div>
             </div>
@@ -87,7 +86,7 @@
 </script>
 <c:if test="${param.logout != null}">
     <script>
-        $.ready(function (){
+        $.ready(function () {
             alert("로그아웃 하였습니다.");
         })
 

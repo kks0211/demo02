@@ -16,6 +16,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -34,11 +35,10 @@ public class ServletConfig implements WebMvcConfigurer {
     @Bean
     public ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        //templateResolver.setTemplateMode("HTML5");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
 
-        templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCharacterEncoding("utf-8");
         templateResolver.setCacheable(false);
 
@@ -60,7 +60,6 @@ public class ServletConfig implements WebMvcConfigurer {
         viewResolver.setCharacterEncoding("utf-8");
         //viewResolver.setOrder(1);
 
-        //viewResolver.setViewNames(new String[]{"*.html"});
         viewResolver.setViewNames(new String[]{"/tboard/*"});
 
         return viewResolver;
@@ -89,6 +88,7 @@ public class ServletConfig implements WebMvcConfigurer {
         bean.setViewClass(JstlView.class);
         bean.setPrefix("/WEB-INF/views/");
         bean.setSuffix(".jsp");
+        bean.setViewNames("/*");
         registry.viewResolver(bean);*/
     }
 

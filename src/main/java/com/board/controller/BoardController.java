@@ -75,7 +75,7 @@ public class BoardController {
         log.info("list : " + cri);
         int total = service.getTotalCount(cri);
         log.info("list total : " + total);
-        
+
         model.addAttribute("list", service.getList(cri));
         model.addAttribute("pageMaker", new PageDTO(cri, total));
         return "/board/list";
@@ -86,8 +86,8 @@ public class BoardController {
         return "/board/register";
     }
 
-    @PostMapping("/register")
     @PreAuthorize("isAuthenticated()")
+    @PostMapping("/register")
     public String register(BoardVO vo, RedirectAttributes rttr) {
 
         log.info("register : " + vo);
@@ -133,6 +133,7 @@ public class BoardController {
     @PostMapping("/remove")
     public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri, String writer) {
         log.info("remove ---- " + bno);
+        log.info("writer ---- " + writer);
         if (service.remove(bno)) {
             rttr.addFlashAttribute("result", "success");
         }

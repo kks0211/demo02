@@ -2,7 +2,9 @@
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@include file="../includes/header.jsp" %>
+
 
 <div class="row">
     <div class="col-lg-12">
@@ -11,7 +13,6 @@
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
-
 
 <div class="row">
     <div class="col-lg-12">
@@ -48,25 +49,33 @@
                         <a href="/board/list">List</a></button> --%>
 
 
+                <!-- <button data-oper='modify' class="btn btn-default">Modify</button>
+                 -->
                 <sec:authentication property="principal" var="pinfo"/>
+
                 <sec:authorize access="isAuthenticated()">
+
                     <c:if test="${pinfo.username eq board.writer}">
-                        <button date-oper="modify" class="btn btn-default">Modify</button>
+
+                        <button data-oper='modify' class="btn btn-default">Modify</button>
+
                     </c:if>
                 </sec:authorize>
+
                 <button data-oper='list' class="btn btn-info">List</button>
 
-                <%--<form id='operForm' action="/boad/modify" method="get">
-                    <input type='hidden' id='bno' name='bno' value='<c:out value="${board.bno}"/>'>
-                </form>--%>
+                <%-- <form id='operForm' action="/boad/modify" method="get">
+                  <input type='hidden' id='bno' name='bno' value='<c:out value="${board.bno}"/>'>
+                </form> --%>
 
 
-                <form id='operForm' action="/boad/modify" method="get">
+                <form id='operForm' action="/board/modify" method="get">
                     <input type='hidden' id='bno' name='bno' value='<c:out value="${board.bno}"/>'>
                     <input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/>'>
                     <input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
                     <input type='hidden' name='keyword' value='<c:out value="${cri.keyword}"/>'>
                     <input type='hidden' name='type' value='<c:out value="${cri.type}"/>'>
+
                 </form>
 
 
@@ -79,6 +88,90 @@
     <!-- end panel -->
 </div>
 <!-- /.row -->
+
+
+<div class='bigPictureWrapper'>
+    <div class='bigPicture'>
+    </div>
+</div>
+
+
+<style>
+    .uploadResult {
+        width: 100%;
+        background-color: gray;
+    }
+
+    .uploadResult ul {
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .uploadResult ul li {
+        list-style: none;
+        padding: 10px;
+        align-content: center;
+        text-align: center;
+    }
+
+    .uploadResult ul li img {
+        width: 100px;
+    }
+
+    .uploadResult ul li span {
+        color: white;
+    }
+
+    .bigPictureWrapper {
+        position: absolute;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        top: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: gray;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .bigPicture {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bigPicture img {
+        width: 600px;
+    }
+
+</style>
+
+
+<%--<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+
+            <div class="panel-heading">Files</div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <div class='uploadResult'>
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <!--  end panel-body -->
+        </div>
+        <!--  end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>--%>
+<!-- /.row -->
+
 
 <div class='row'>
 
@@ -101,6 +194,7 @@
                     <button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
                 </sec:authorize>
             </div>
+
 
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -160,7 +254,8 @@
 </div>
 <!-- /.modal -->
 
-<script src="/resources/js/reply.js"></script>
+
+<script type="text/javascript" src="/resources/js/reply.js"></script>
 
 <script>
 
@@ -236,6 +331,7 @@
                 str += "<li class='page-item'><a class='page-link' href='" + (startNum - 1) + "'>Previous</a></li>";
             }
 
+
             for (var i = startNum; i <= endNum; i++) {
 
                 var active = pageNum == i ? "active" : "";
@@ -302,21 +398,6 @@
         var modalRemoveBtn = $("#modalRemoveBtn");
         var modalRegisterBtn = $("#modalRegisterBtn");
 
-        var replyer = null;
-        <sec:authorize access="isAuthenticated()">
-        replyer = '<sec:authentication property="principal.username"/>';
-
-        </sec:authorize>
-
-        var csrfHeaderName = "${_csrf.headName}";
-        var csrfTokenValue = "${_csrf.token}";
-
-
-        $.ajaxSend(function (e, xhr, options) {
-            xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
-        });
-
-
         $("#modalCloseBtn").on("click", function (e) {
 
             modal.modal('hide');
@@ -325,6 +406,7 @@
         $("#addReplyBtn").on("click", function (e) {
 
             modal.find("input").val("");
+            modal.find("input[name='replyer']").val(replyer);
             modalInputReplyDate.closest("div").hide();
             modal.find("button[id !='modalCloseBtn']").hide();
 
@@ -332,6 +414,11 @@
 
             $(".modal").modal("show");
 
+        });
+
+
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
         });
 
 
@@ -408,28 +495,9 @@
 
               }); */
 
-        /*modalModBtn.on("click", function (e) {
-
-            var reply = {
-                rno: modal.data("rno"),
-                reply: modalInputReply.val()
-            };
-
-            replyService.update(reply, function (result) {
-
-                alert(result);
-                modal.modal("hide");
-                showList(pageNum);
-
-            });
-        });*/
-
         modalModBtn.on("click", function (e) {
 
-            var reply = {
-                rno: modal.data("rno"),
-                reply: modalInputReply.val()
-            };
+            var reply = {rno: modal.data("rno"), reply: modalInputReply.val()};
 
             if (!replyer) {
                 alert("로그인후 수정이 가능합니다.");
@@ -459,63 +527,135 @@
 
         });
 
+        /*
+               modalRemoveBtn.on("click", function (e){
+
+                 var rno = modal.data("rno");
+
+                 replyService.remove(rno, function(result){
+
+                     alert(result);
+                     modal.modal("hide");
+                     showList(pageNum);
+
+                 });
+
+               }); */
+
+
         modalRemoveBtn.on("click", function (e) {
 
             var rno = modal.data("rno");
 
+            console.log("RNO: " + rno);
+            console.log("REPLYER: " + replyer);
+
             if (!replyer) {
-                alert("로그인 후 삭제가 가능합니다.")
+                alert("로그인후 삭제가 가능합니다.");
                 modal.modal("hide");
                 return;
             }
 
             var originalReplyer = modalInputReplyer.val();
 
+            console.log("Original Replyer: " + originalReplyer);
+
             if (replyer != originalReplyer) {
+
                 alert("자신이 작성한 댓글만 삭제가 가능합니다.");
                 modal.modal("hide");
                 return;
+
             }
-            replyService.remove(rno, function (result) {
+
+
+            replyService.remove(rno, originalReplyer, function (result) {
 
                 alert(result);
                 modal.modal("hide");
                 showList(pageNum);
 
             });
+
         });
+
+
+        var replyer = null;
+
+        <sec:authorize access="isAuthenticated()">
+
+        replyer = '<sec:authentication property="principal.username"/>';
+
+        </sec:authorize>
+
+        var csrfHeaderName = "${_csrf.headerName}";
+        var csrfTokenValue = "${_csrf.token}";
+
+
     });
 
 </script>
 
-<script type="text/javascript">
-    var bnoValue = '<c:out value="${board.bno}"/>';
 
-    /*replyService.add(
-        {reply: "JS Test", replyer: "tester", bno: bnoValue},
-        function (result) {
-            alert("Result : " + result);
+<script>
+
+    /* console.log("===============");
+    console.log("JS TEST");
+
+    var bnoValue = '<c:out value="${board.bno}"/>'; */
+
+    //for replyService add test
+    /* replyService.add(
+
+        {reply:"JS Test", replyer:"tester", bno:bnoValue}
+        ,
+        function(result){
+          alert("RESULT: " + result);
         }
-    )*/
+    ); */
 
-    /*replyService.getList({bno: bnoValue, page: 1}, function (list) {
-        for (var i = 0, len = list.length || 0; i < len; i++) {
+
+    //reply List Test
+    /* replyService.getList({bno:bnoValue, page:1}, function(list){
+
+          for(var i = 0,  len = list.length||0; i < len; i++ ){
             console.log(list[i]);
-        }
-    })*/
+          }
+    });
+     */
 
-    /*replyService.remove(4, function (count) {
-        console.log('======> ' + count);
 
-        if (count == 'success') {
-            alert('remove-');
-        }
-    }, function (err) {
-        alert(err);
-    })*/
+    /*  //17번 댓글 삭제 테스트
+     replyService.remove(17, function(count) {
 
+       console.log(count);
+
+       if (count === "success") {
+         alert("REMOVED");
+       }
+     }, function(err) {
+       alert('ERROR...');
+     });
+     */
+
+
+    //12번 댓글 수정
+    /* replyService.update({
+      rno : 12,
+      bno : bnoValue,
+      reply : "Modified Reply...."
+    }, function(result) {
+
+      alert("수정 완료...");
+
+    });
+     */
+
+</script>
+
+
+<script type="text/javascript">
     $(document).ready(function () {
-
 
         var operForm = $("#operForm");
 
@@ -524,6 +664,7 @@
             operForm.attr("action", "/board/modify").submit();
 
         });
+
 
         $("button[data-oper='list']").on("click", function (e) {
 
@@ -535,5 +676,96 @@
     });
 </script>
 
+
+<script>
+
+
+    $(document).ready(function () {
+
+        (function () {
+
+            var bno = '<c:out value="${board.bno}"/>';
+
+            /* $.getJSON("/board/getAttachList", {bno: bno}, function(arr){
+
+              console.log(arr);
+
+
+            }); *///end getjson
+            $.getJSON("/board/getAttachList", {bno: bno}, function (arr) {
+
+                console.log(arr);
+
+                var str = "";
+
+                $(arr).each(function (i, attach) {
+
+                    //image type
+                    if (attach.fileType) {
+                        var fileCallPath = encodeURIComponent(attach.uploadPath + "/s_" + attach.uuid + "_" + attach.fileName);
+
+                        str += "<li data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.fileType + "' ><div>";
+                        str += "<img src='/display?fileName=" + fileCallPath + "'>";
+                        str += "</div>";
+                        str + "</li>";
+                    } else {
+
+                        str += "<li data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.fileType + "' ><div>";
+                        str += "<span> " + attach.fileName + "</span><br/>";
+                        str += "<img src='/resources/img/attach.png'></a>";
+                        str += "</div>";
+                        str + "</li>";
+                    }
+                });
+
+                $(".uploadResult ul").html(str);
+
+
+            });//end getjson
+
+
+        })();//end function
+
+        $(".uploadResult").on("click", "li", function (e) {
+
+            console.log("view image");
+
+            var liObj = $(this);
+
+            var path = encodeURIComponent(liObj.data("path") + "/" + liObj.data("uuid") + "_" + liObj.data("filename"));
+
+            if (liObj.data("type")) {
+                showImage(path.replace(new RegExp(/\\/g), "/"));
+            } else {
+                //download
+                self.location = "/download?fileName=" + path
+            }
+
+
+        });
+
+        function showImage(fileCallPath) {
+
+            alert(fileCallPath);
+
+            $(".bigPictureWrapper").css("display", "flex").show();
+
+            $(".bigPicture")
+                .html("<img src='/display?fileName=" + fileCallPath + "' >")
+                .animate({width: '100%', height: '100%'}, 1000);
+
+        }
+
+        $(".bigPictureWrapper").on("click", function (e) {
+            $(".bigPicture").animate({width: '0%', height: '0%'}, 1000);
+            setTimeout(function () {
+                $('.bigPictureWrapper').hide();
+            }, 1000);
+        });
+
+
+    });
+
+</script>
 
 <%@include file="../includes/footer.jsp" %>

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@include file="../includes/header.jsp" %>
@@ -45,8 +44,7 @@
 
                     <div class="form-group">
                         <label>Text area</label>
-                        <textarea class="form-control" rows="3" name='content'>
-                            <c:out value="${board.content}"/></textarea>
+                        <textarea class="form-control" rows="3" name='content'><c:out value="${board.content}"/></textarea>
                     </div>
 
                     <div class="form-group">
@@ -94,7 +92,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
 
         var formObj = $("form");
 

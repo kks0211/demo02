@@ -276,3 +276,6 @@ Java 설정
 //
 > CustomDetailsService 설정
 
+@Secured(ROLE_ADMIN)
+@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')")
+@PostAuthorize

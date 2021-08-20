@@ -1,9 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@include file="../includes/header.jsp" %>
-
 
 <div class="row">
     <div class="col-lg-12">
@@ -24,7 +22,8 @@
                 <form role="form" action="/board/register" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <div class="form-group">
-                        <label>Title</label> <input class="form-control" name='title'>
+                        <label>Title</label>
+                        <input class="form-control" name='title'>
                     </div>
 
                     <div class="form-group">
@@ -33,7 +32,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Writer</label> <input class="form-control" name='writer' value="'<sec:authentication property="principal.username"/>'" readonly="readonly">
+                        <label>Writer</label>
+                        <input class="form-control" name='writer'
+                                value="<sec:authentication property="principal.username"/>"
+                                readonly="readonly">
                     </div>
                     <button type="submit" class="btn btn-default">Submit
                         Button
@@ -51,6 +53,14 @@
     <!-- end panel -->
 </div>
 <!-- /.row -->
+
+<form role='actionForm' id='actionForm' action="/board/list" method='get'>
+    <input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+    <input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+    <input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'>
+    <input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
+</form>
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -65,7 +75,7 @@
 
         });*/
 
-        var operForm = $("#form");
+        var operForm = $("#actionForm");
 
         $("button[data-oper='list']").on("click", function (e) {
             //commonAjax("get", "/board/list")
