@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestConfiguration
-class MemberMapperTestw {
+class MemberMapperTests {
 
     @Setter(onMethod_ = @Autowired)
     private MemberMapper memberMapper;

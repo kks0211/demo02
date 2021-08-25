@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.mapper.CategoryMapper">
+
+    <insert id="insertSelectKey">
+        <selectKey keyProperty="categoryId" order="BEFORE" resultType="Long">
+            select seq_category.nextval from dual
+        </selectKey>
+
+        insert into category (categoryid, categoryname) values (#{categoryId}, #{categoryName})
+
+    </insert>
+
+    <select id="read" resultType="Category">
+        select *
+        from category
+        where categoryid = #{categoryId}
+    </select>
+
+    <select id="List" resultType="Category">
+        select *
+        from category
+        where categoryid > 0
+    </select>
+
+</mapper>

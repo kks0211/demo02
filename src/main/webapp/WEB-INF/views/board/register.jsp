@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@include file="../includes/header.jsp" %>
 
 <div class="row">
@@ -21,6 +22,15 @@
 
                 <form role="form" action="/board/register" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="form-control" name ="categoryId">
+                            <option value="">카테고리 선택</option>
+                            <option value="1">자유게시판</option>
+                            <option value="2">회원게시판</option>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label>Title</label>
                         <input class="form-control" name='title'>

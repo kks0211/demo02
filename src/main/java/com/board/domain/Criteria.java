@@ -26,7 +26,8 @@ public class Criteria extends Search{
                                         .queryParam("pageNum", this.pageNum)
                                         .queryParam("amount", this.getAmount())
                                         .queryParam("type", this.getType())
-                                        .queryParam("keyword", this.getKeyword());
+                                        .queryParam("keyword", this.getKeyword())
+                                        .queryParam("category", this.getCategory());
         return builder.toUriString();
     }
 

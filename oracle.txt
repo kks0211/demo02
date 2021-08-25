@@ -17,7 +17,8 @@ CREATE TABLE tbl_board(
 	content varchar2(2000) NOT NULL,
 	writer varchar2(50) NOT NULL,
 	regdate DATE DEFAULT sysdate,
-	updatedate DATE DEFAULT sysdate
+	updatedate DATE DEFAULT sysdate,
+	categoryid NUMBER(10,0)
 );
 
 ALTER TABLE tbl_board ADD CONSTRAINT pk_board
@@ -88,3 +89,19 @@ username varchar2(64) not null,
 series varchar2(64) primary key,
 token varchar2(64) not null,
 last_used date not null);
+
+================================================================
+
+alter table tbl_board add (categoryid number(10,0));
+
+CREATE SEQUENCE seq_category;
+
+create table category(
+categoryid number(10,0) primary key,
+categoryname varchar2(100) not null,
+regdate date default sysdate,
+updatedate date default sysdate,
+
+constraint fk_category foreign key(categoryid) references tbl_board(categoryid)
+);
+

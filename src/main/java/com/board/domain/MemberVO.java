@@ -1,16 +1,15 @@
 package com.board.domain;
 
+import lombok.*;
+
 import java.util.Date;
 import java.util.List;
 
-import lombok.*;
-
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberVO {
 
 	private String userid;

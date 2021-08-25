@@ -1,9 +1,9 @@
 package com.board.config;
 
 import com.board.security.CustomLoginSuccessHandler;
+import com.board.security.CustomNoOpPasswordEncoder;
 import com.board.security.CustomUserDetailsService;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,10 +23,11 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Setter(onMethod_ = {@Autowired})
-    private DataSource dataSource;
+    //@Setter(onMethod_ = {@Autowired})
+    private final DataSource dataSource;
 
     @Bean
     public UserDetailsService customUserService() {
@@ -95,6 +96,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    /*public PasswordEncoder passwordEncoder() {
+        return new CustomNoOpPasswordEncoder();
+    }*/
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {

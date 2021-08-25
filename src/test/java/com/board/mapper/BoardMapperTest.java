@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @TestConfiguration
 public class BoardMapperTest {
@@ -36,7 +37,11 @@ public class BoardMapperTest {
 
     @Test
     public void testGetList() {
-        boardMapper.getList().forEach(board -> log.info("board : {} ", board));
+        //boardMapper.getList().forEach(board -> log.info("board : {} ", board));
+
+        log.info("{}",boardMapper.getList().stream().collect(Collectors.toList()));
+        //log.info("{}",boardMapper.getList().stream().collect(Collectors.toMap(BoardVO::getBno, BoardVO::getContent)));
+
     }
 
     @Test
@@ -87,9 +92,9 @@ public class BoardMapperTest {
         cri.setPageNum(1);
         cri.setAmount(10);
 
-        List<BoardVO> list = boardMapper.getListWithPaging(cri);
+        //List<BoardVO> list = boardMapper.getListWithPaging(cri, category);
 
-        list.forEach(board -> log.info("board : {}", board));
+        //list.forEach(board -> log.info("board : {}", board));
     }
 
 }

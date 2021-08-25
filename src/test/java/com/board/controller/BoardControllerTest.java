@@ -1,38 +1,32 @@
 package com.board.controller;
 
-import com.board.config.RootConfig;
-import com.board.config.ServletConfig;
+import com.board.config.TestConfiguration;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 @Log4j
 @WebAppConfiguration
 //@RunWith(SpringJUnit4ClassRunner.class)
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {RootConfig.class, ServletConfig.class})
-@ActiveProfiles("dev")
+//@ExtendWith(SpringExtension.class)
+//@ContextConfiguration(classes = {RootConfig.class, ServletConfig.class})
+//@ActiveProfiles("real")
+@TestConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BoardControllerTest {
 
-    /*@Setter(onMethod_ = @Autowired)
-    private WebApplicationContext webApplicationContext;*/
-
+    @Setter(onMethod_ = @Autowired)
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mvc;
@@ -46,6 +40,7 @@ public class BoardControllerTest {
     public void list() throws Exception {
         log.info(mvc.perform(MockMvcRequestBuilders.get("/board/list")).
                 andReturn().getModelAndView().getModelMap());
+
     }
 
     @Test
@@ -60,7 +55,7 @@ public class BoardControllerTest {
 
     @Test
     public void test2Get() throws Exception {
-        log.info(mvc.perform(MockMvcRequestBuilders.get("/board/get").
+        log.info(mvc.perform(get("/board/get").
                         param("bno", "1"))
                 .andReturn().getModelAndView().getModelMap());
     }
@@ -87,7 +82,7 @@ public class BoardControllerTest {
 
     @Test
     public void test4ListPaging() throws Exception {
-        log.info(mvc.perform(MockMvcRequestBuilders.get("/board/list").param("pageNum", "1").param("amount", "10"))
+        log.info(mvc.perform(get("/board/list").param("pageNum", "1").param("amount", "10"))
                 .andReturn().getModelAndView().getModelMap());
     }
 }

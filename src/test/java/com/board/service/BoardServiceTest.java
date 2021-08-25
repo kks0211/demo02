@@ -56,6 +56,6 @@ public class BoardServiceTest {
     public void getList() {
 
         // boardService.getList().forEach(vo -> log.info(vo));
-        boardService.getList(new Criteria(2, 10)).forEach(vo -> log.info(vo));
+        //boardService.getList(new Criteria(2, 10)).forEach(vo -> log.info(vo));
     }
 }

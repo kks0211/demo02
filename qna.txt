@@ -231,6 +231,8 @@ GrantAuthority는 현재 사용자(principal)가 가지고 있는 권한을 의�
 1. 스프링 시큐리티 란 ?  https://sjh836.tistory.com/165, https://okky.kr/article/382738
 
 > 스프링 기반의 애플리케이션 보안 (인증과 권한, 인가등) 을 처리하는 스프링 하위 프레임워크 !
+> 스프링 시큐리티는 필터와 인터셉터로 구성되어 있고, 필터는 서블릿 자원을 사용하고 인터셉터는 스프링 빈으로 관리되며 스프링의 컨텍스트에 속한다.
+> 필터는 요청에 대한 응답 인터셉터는 요청의 전후 의 처리
 > 서블릿 필터와 이들로 구성된 필터체인으로 구성됨
 
 
@@ -279,3 +281,20 @@ Java 설정
 @Secured(ROLE_ADMIN)
 @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')")
 @PostAuthorize
+
+
+=============================================================
+
+hasRole([role]) : 현재 사용자의 권한이 파라미터의 권한과 동일한 경우 true
+hasAnyRole([role1,role2]) : 현재 사용자의 권한이 파라미터의 권한 중 일치하는 것이 있는 경우 true
+principal : 사용자를 증명하는 주요객체(User)를 직접 접근할 수 있다.
+authentication : SecurityContext에 있는 authentication 객체에 접근 할 수 있다.
+permitAll : 모든 접근 허용
+denyAll : 모든 접근 비허용
+isAnonymous() : 현재 사용자가 익명(비로그인)인 상태인 경우 true
+isRememberMe() : 현재 사용자가 RememberMe 사용자라면 true
+isAuthenticated() : 현재 사용자가 익명이 아니라면 (로그인 상태라면) true
+isFullyAuthenticated() : 현재 사용자가 익명이거나 RememberMe 사용자가 아니라면 true
+
+
+@ResponseBody 는 객체를 JSON으로 변환해서 브라우저로 전달

@@ -28,7 +28,8 @@
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th>#번호</th>
+                        <th>번호</th>
+                        <th>카테고리</th>
                         <th>제목</th>
                         <th>작성자</th>
                         <th>작성일</th>
@@ -39,6 +40,7 @@
                     <c:forEach items="${list}" var="board">
                         <tr>
                             <td><c:out value="${board.bno}"/></td>
+                            <td><c:out value="${board.categoryId == 1 ? '자유게시판' : '회원게시판'}"/></td>
                                 <%-- <td><a href='/board/get?bno=<c:out value="${board.bno}"/>'><c:out value="${board.title}"/></a></td> --%>
 
                             <td><a class='move' href='<c:out value="${board.bno}"/>'>
@@ -58,6 +60,17 @@
                     <div class="col-lg-12">
 
                         <form id='searchForm' action="/board/list" method='get'>
+                            <select name = 'category'>
+                                <option value=""
+                                        <c:out value="${board.categoryId == null?'selected':''}"/>>--
+                                </option>
+                                <option value="1"
+                                        <c:out value="${board.categoryId eq '1'?'selected':''}"/>>자유게시판
+                                </option>
+                                <option value="2"
+                                        <c:out value="${board.categoryId eq '2'?'selected':''}"/>>회원게시판
+                                </option>
+                            </select>
                             <select name='type'>
                                 <option value=""
                                         <c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--
@@ -83,12 +96,10 @@
                                         <c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목
                                     or 내용 or 작성자
                                 </option>
-                            </select> <input type='text' name='keyword'
-                                             value='<c:out value="${pageMaker.cri.keyword}"/>'/> <input
-                                type='hidden' name='pageNum'
-                                value='<c:out value="${pageMaker.cri.pageNum}"/>'/> <input
-                                type='hidden' name='amount'
-                                value='<c:out value="${pageMaker.cri.amount}"/>'/>
+                            </select>
+                            <input type='text' name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>'/>
+                            <input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>'/>
+                            <input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>'/>
                             <button class='btn btn-default'>Search</button>
                         </form>
                     </div>
@@ -140,6 +151,7 @@
                 <input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
                 <input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'>
                 <input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
+                <input type='hidden' name='category' value='<c:out value="${ board.categoryId }"/>'>
             </form>
 
 
@@ -244,7 +256,7 @@
                     "click",
                     function (e) {
 
-                        if (!searchForm.find("option:selected")
+                        /*if (!searchForm.find("option:selected")
                             .val()) {
                             alert("검색종류를 선택하세요");
                             return false;
@@ -254,7 +266,7 @@
                             "input[name='keyword']").val()) {
                             alert("키워드를 입력하세요");
                             return false;
-                        }
+                        }*/
 
                         searchForm.find("input[name='pageNum']")
                             .val("1");

@@ -16,6 +16,7 @@ public class BoardVO {
     private Date regdate;
     private Date updatedate;
     private int replyCnt;
+    private Long categoryId;
 
     @Builder
     public BoardVO(String title, String content, String writer) {
