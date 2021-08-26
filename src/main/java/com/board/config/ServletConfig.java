@@ -3,6 +3,7 @@ package com.board.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -25,10 +25,11 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.board.controller"})
+@ComponentScan(basePackages = {"com.board.controller", "com.board.exception"})
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class ServletConfig implements WebMvcConfigurer {
 
@@ -175,18 +176,24 @@ public class ServletConfig implements WebMvcConfigurer {
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver getResolver() throws IOException {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-
         resolver.setMaxUploadSize(1024 * 1024 * 10);
-
         resolver.setMaxUploadSizePerFile(1024 * 1024 * 2);
-
         resolver.setMaxInMemorySize(1024 * 1024);
-
         resolver.setUploadTempDir(new FileSystemResource("C:\\upload\\tmp"));
-
         resolver.setDefaultEncoding("UTF-8");
 
         return resolver;
+    }
+
+    @Bean
+    public ReloadableResourceBundleMessageSource messageSource() {
+        ReloadableResourceBundleMessageSource source = new ReloadableResourceBundleMessageSource();
+        source.setBasename("classpath:/messages/message*.properties");
+        source.setDefaultEncoding("UTF-8");
+        source.setCacheSeconds(60);
+        //source.setDefaultLocale(Locale.US);
+        source.setUseCodeAsDefaultMessage(true);
+        return source;
     }
 
 }

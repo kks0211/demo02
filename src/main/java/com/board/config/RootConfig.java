@@ -9,9 +9,11 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
+import java.util.Locale;
 
 @Configuration
 @RequiredArgsConstructor
@@ -51,16 +53,16 @@ public class RootConfig {
     @Bean
     public DataSource datasource() {
 
-            HikariConfig hikariConfig = new HikariConfig();
-            //hikariConfig.setDriverClassName("oracle.jdbc.OracleDriver");
-            //hikariConfig.setJdbcUrl("jdbc:oracle:thin:@localhost:1521:XE");
-            hikariConfig.setDriverClassName(className);
-            hikariConfig.setJdbcUrl(jdbcUrl);
-            hikariConfig.setUsername(userId);
-            hikariConfig.setPassword(pw);
+        HikariConfig hikariConfig = new HikariConfig();
+        //hikariConfig.setDriverClassName("oracle.jdbc.OracleDriver");
+        //hikariConfig.setJdbcUrl("jdbc:oracle:thin:@localhost:1521:XE");
+        hikariConfig.setDriverClassName(className);
+        hikariConfig.setJdbcUrl(jdbcUrl);
+        hikariConfig.setUsername(userId);
+        hikariConfig.setPassword(pw);
 
-            HikariDataSource dataSource = new HikariDataSource(hikariConfig);
-            return dataSource;
+        HikariDataSource dataSource = new HikariDataSource(hikariConfig);
+        return dataSource;
     }
 
     /*@Bean
@@ -82,4 +84,5 @@ public class RootConfig {
         sqlSessionFactoryBean.setTypeAliasesPackage("com.board.domain");
         return (SqlSessionFactory) sqlSessionFactoryBean.getObject();
     }
+
 }

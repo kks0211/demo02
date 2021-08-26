@@ -1,9 +1,7 @@
 package com.board.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
-import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {

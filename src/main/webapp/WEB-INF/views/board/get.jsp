@@ -425,9 +425,9 @@
         modalRegisterBtn.on("click", function (e) {
 
             var reply = {
-                reply: modalInputReply.val(),
+                reply  : modalInputReply.val(),
                 replyer: modalInputReplyer.val(),
-                bno: bnoValue
+                bno    : bnoValue
             };
             replyService.add(reply, function (result) {
 
@@ -692,7 +692,7 @@
 
 
             }); *///end getjson
-            $.getJSON("/board/getAttachList", {bno: bno}, function (arr) {
+            /*$.getJSON("/board/getAttachList", {bno: bno}, function (arr) {
 
                 console.log(arr);
 
@@ -721,7 +721,8 @@
                 $(".uploadResult ul").html(str);
 
 
-            });//end getjson
+            });*/
+            //end getjson
 
 
         })();//end function

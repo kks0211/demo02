@@ -1,8 +1,11 @@
 package com.board.controller;
 
+import com.board.config.http.BaseResponse;
+import com.board.config.http.BaseResponseCode;
 import com.board.domain.Criteria;
 import com.board.domain.ReplyPageDTO;
 import com.board.domain.ReplyVO;
+import com.board.exception.BaseException;
 import com.board.service.ReplyService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,12 +27,27 @@ public class ReplyController {
     private ReplyService replyService;
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(value = "/new", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<String> create(@RequestBody ReplyVO vo) {
+    //@PostMapping(value = "/new", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PostMapping("/new")
+    public BaseResponse<Long> create(@RequestBody ReplyVO vo) {
         log.info("vo : {}", vo);
-        int result = replyService.regist(vo);
-        log.info("result : {} ", result);
-        return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        //int result = replyService.regist(vo);
+        //log.info("result : {} ", result);
+        // return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        if (StringUtils.isEmpty(vo.getReply()) || vo.getReply() == "") {
+            log.info("vo getReply : {}", vo.getReply());
+            throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[]{"reply", "댓글"});
+        }
+
+        if(StringUtils.isEmpty(vo.getReplyer())){
+            throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[]{"replyer", "작성자"});
+        }
+
+        replyService.regist(vo);
+
+        return new BaseResponse<Long>(vo.getRno());
 
     }
 
