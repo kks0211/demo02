@@ -26,6 +26,8 @@ PRIMARY KEY (bno);
 
 alter table tbl_board add (replycnt NUMBER(10,0) default 0);
 
+alter table tbl_board add (categoryid NUMBER(10,0) default 0);
+
 create table tbl_reply(
     rno number(10,0),
     bno number(10,0) not null,

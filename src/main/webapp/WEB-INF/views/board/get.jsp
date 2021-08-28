@@ -23,13 +23,13 @@
             <div class="panel-body">
 
                 <div class="form-group">
-                    <label>Bno</label> <input class="form-control" name='bno'
-                                              value='<c:out value="${board.bno }"/>' readonly="readonly">
+                    <label>Bno</label>
+                    <input class="form-control" name='bno' value='<c:out value="${board.bno }"/>' readonly="readonly">
                 </div>
 
                 <div class="form-group">
-                    <label>Title</label> <input class="form-control" name='title'
-                                                value='<c:out value="${board.title }"/>' readonly="readonly">
+                    <label>Title</label>
+                    <input class="form-control" name='title' value='<c:out value="${board.title }"/>' readonly="readonly">
                 </div>
 
                 <div class="form-group">
@@ -39,8 +39,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Writer</label> <input class="form-control" name='writer'
-                                                 value='<c:out value="${board.writer }"/>' readonly="readonly">
+                    <label>Writer</label>
+                    <input class="form-control" name='writer' value='<c:out value="${board.writer }"/>' readonly="readonly">
                 </div>
 
                 <%-- 		<button data-oper='modify' class="btn btn-default">
@@ -49,8 +49,7 @@
                         <a href="/board/list">List</a></button> --%>
 
 
-                <!-- <button data-oper='modify' class="btn btn-default">Modify</button>
-                 -->
+                <!-- <button data-oper='modify' class="btn btn-default">Modify</button> -->
                 <sec:authentication property="principal" var="pinfo"/>
 
                 <sec:authorize access="isAuthenticated()">
@@ -68,14 +67,12 @@
                   <input type='hidden' id='bno' name='bno' value='<c:out value="${board.bno}"/>'>
                 </form> --%>
 
-
                 <form id='operForm' action="/board/modify" method="get">
                     <input type='hidden' id='bno' name='bno' value='<c:out value="${board.bno}"/>'>
                     <input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/>'>
                     <input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
                     <input type='hidden' name='keyword' value='<c:out value="${cri.keyword}"/>'>
                     <input type='hidden' name='type' value='<c:out value="${cri.type}"/>'>
-
                 </form>
 
 
@@ -431,7 +428,8 @@
             };
             replyService.add(reply, function (result) {
 
-                alert(result);
+                alert(result.message);
+                alert(result.status);
 
                 modal.find("input").val("");
                 modal.modal("hide");
@@ -440,7 +438,6 @@
                 showList(-1);
 
             });
-
         });
 
 

@@ -60,7 +60,7 @@
                     <div class="col-lg-12">
 
                         <form id='searchForm' action="/board/list" method='get'>
-                            <select name = 'category'>
+                            <select name='category'>
                                 <option value=""
                                         <c:out value="${board.categoryId == null?'selected':''}"/>>--
                                 </option>

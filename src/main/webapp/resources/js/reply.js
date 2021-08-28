@@ -12,11 +12,6 @@ var replyService = (function () {
             async      : false,
             contentType: "application/json; charset=utf-8",
             success    : function (result, status, xhr) {
-                var r = JSON.stringify(xhr);
-
-                alert('1 : ' + r);
-                alert('1 : ' + result);
-
                 if (callback) {
                     callback(result);
                 }
@@ -86,18 +81,14 @@ var replyService = (function () {
 
     function remove(rno, replyer, callback, error) {
 
-
         console.log("--------------------------------------");
         console.log(JSON.stringify({rno: rno, replyer: replyer}));
 
         $.ajax({
             type: 'delete',
             url : '/replies/' + rno,
-
             data: JSON.stringify({rno: rno, replyer: replyer}),
-
             contentType: "application/json; charset=utf-8",
-
             success: function (deleteResult, status, xhr) {
                 if (callback) {
                     callback(deleteResult);

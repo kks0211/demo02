@@ -298,3 +298,6 @@ isFullyAuthenticated() : 현재 사용자가 익명이거나 RememberMe 사용�
 
 
 @ResponseBody 는 객체를 JSON으로 변환해서 브라우저로 전달
+
+
+스프링 시큐리티 구현 부 확인 (Impl)
