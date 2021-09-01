@@ -1,6 +1,9 @@
-1. 자유 게시판 - all
+@ResponseBody 는 객체를 JSON으로 변환해서 브라우저로 전달
 
-2. 회원 게시판 - member
+@RequestBody 는 JSON 데이터를 원하는 타입의 객체로 변환
 
-3. 관리자 게시판 - admin
+consumes : 수신(요청) 하고자 하는 데이터 포맷
 
+produce : 출력(응답)하고자 하는 데어터 포맷
+
+JSON.stringify() 메서드는 JavaScript 값이나 객체를 JSON 문자열로 변환합니다

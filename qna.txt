@@ -228,7 +228,7 @@ GrantAuthority는 현재 사용자(principal)가 가지고 있는 권한을 의�
 
 
 
-1. 스프링 시큐리티 란 ?  https://sjh836.tistory.com/165, https://okky.kr/article/382738
+1. 스프링 시큐리티 란 ?
 
 > 스프링 기반의 애플리케이션 보안 (인증과 권한, 인가등) 을 처리하는 스프링 하위 프레임워크 !
 > 스프링 시큐리티는 필터와 인터셉터로 구성되어 있고, 필터는 서블릿 자원을 사용하고 인터셉터는 스프링 빈으로 관리되며 스프링의 컨텍스트에 속한다.
@@ -297,7 +297,11 @@ isAuthenticated() : 현재 사용자가 익명이 아니라면 (로그인 상태
 isFullyAuthenticated() : 현재 사용자가 익명이거나 RememberMe 사용자가 아니라면 true
 
 
-@ResponseBody 는 객체를 JSON으로 변환해서 브라우저로 전달
 
 
 스프링 시큐리티 구현 부 확인 (Impl)
+회원가입 만들기 !
+
+
+
+https://kimchanjung.github.io/programming/2020/07/03/spring-security-03/

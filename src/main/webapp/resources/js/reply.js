@@ -11,9 +11,9 @@ var replyService = (function () {
             data       : JSON.stringify(reply),
             async      : false,
             contentType: "application/json; charset=utf-8",
-            success    : function (result, status, xhr) {
+            success    : function (data, status, xhr) {
                 if (callback) {
-                    callback(result);
+                    callback(data);
                 }
             },
             error      : function (xhr, status, er) {

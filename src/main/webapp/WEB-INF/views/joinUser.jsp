@@ -44,33 +44,29 @@
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Please Sign In</h3>
+                    <h3 class="panel-title">회원 가입</h3>
                 </div>
                 <div class="panel-body">
-                    <form role="form" method='post' action="/login">
+                    <form role="form" method='post' action="/joinUser">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="userid"
-                                       name="username" type="text" value="admin00" autofocus>
+                                       name="userid" type="text" value="test00" autofocus>
                             </div>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Password"
-                                       name="password" type="password" value="pw00">
+                                       name="userpw" type="password" value="test00">
                             </div>
-                            <div class="checkbox">
-                                <label> <input name="remember-me" type="checkbox">Remember
-                                    Me
-                                </label>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="username"
+                                       name="userName" type="text" value="test">
                             </div>
+                            <input type="hidden" name="${_csrf.parameterName}"
+                                   value="${_csrf.token}"/>
                             <!-- Change this to a button or input when using this as a form -->
-                            <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a>
+                            <a href="index.html" class="btn btn-lg btn-success btn-block">Join</a>
                         </fieldset>
-                        <input type="hidden" name="${_csrf.parameterName}"
-                               value="${_csrf.token}"/>
                     </form>
-                    <div>
-                        <a href="/joinUser">회원가입</a>
-                    </div>
 
                 </div>
             </div>

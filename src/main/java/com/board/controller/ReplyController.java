@@ -26,10 +26,11 @@ public class ReplyController {
 
     private ReplyService replyService;
 
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     //@PostMapping(value = "/new", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
-    @PostMapping(value = "/new", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public BaseResponse<Long> create(@RequestBody ReplyVO vo) {
+    //@PostMapping(value = "/new", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/new", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<String> create(@RequestBody ReplyVO vo) {
         log.info("vo : {}", vo);
 
         //int result = replyService.regist(vo);
@@ -41,19 +42,13 @@ public class ReplyController {
             throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[]{"댓글", "Reply"});
         }
 
-        if(StringUtils.isEmpty(vo.getReplyer())){
+        if (StringUtils.isEmpty(vo.getReplyer())) {
             throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[]{"작성자", "Replyer"});
         }
 
         int result = replyService.regist(vo);
 
-        //return new BaseResponse<Long>(vo.getRno());
-
-        if (result == 1) {
-            throw new BaseException(BaseResponseCode.SUCCESS);
-        } else {
-            throw new BaseException(BaseResponseCode.ERROR);
-        }
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
     /*@GetMapping(value = "/pages/{bno}/{page}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})

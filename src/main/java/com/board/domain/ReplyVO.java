@@ -4,13 +4,10 @@ import lombok.*;
 
 import java.util.Date;
 
-
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class ReplyVO {
 
     private Long rno;

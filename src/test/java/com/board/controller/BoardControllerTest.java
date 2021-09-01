@@ -1,18 +1,20 @@
 package com.board.controller;
 
+import com.board.config.ServletConfig;
 import com.board.config.TestConfiguration;
-import lombok.Setter;
+import com.board.service.BoardService;
 import lombok.extern.log4j.Log4j;
-import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runners.MethodSorters;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -23,24 +25,38 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 //@ContextConfiguration(classes = {RootConfig.class, ServletConfig.class})
 //@ActiveProfiles("real")
 @TestConfiguration
+@ContextConfiguration(classes = {ServletConfig.class})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BoardControllerTest {
 
-    @Setter(onMethod_ = @Autowired)
+    /*@Autowired
     private WebApplicationContext webApplicationContext;
+
+    private BoardController boardController;
+
+    */
+
+    @Mock
+    BoardService boardService;
+
+    @InjectMocks
+    private BoardController boardController;
 
     private MockMvc mvc;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        this.mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        //System.out.println(webApplicationContext);
+        //mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        this.mvc = MockMvcBuilders.standaloneSetup(boardController).build();
     }
 
     @Test
     public void list() throws Exception {
-        log.info(mvc.perform(MockMvcRequestBuilders.get("/board/list")).
-                andReturn().getModelAndView().getModelMap());
+        mvc.perform(get("/board/list"));
 
+//        log.info(mvc.perform(MockMvcRequestBuilders.get("/board/list")).
+//                andReturn().getModelAndView().getModelMap());
     }
 
     @Test

@@ -32,4 +32,23 @@
         WHERE mem.userid = #{userid}
     </select>
 
+    <select id="findByUserId">
+        SELECT mem.userid
+        FROM tbl_member mem
+                 LEFT OUTER JOIN tbl_member_auth auth on mem.userid = auth.userid
+        WHERE mem.userid = #{userid}
+    </select>
+
+    <insert id="joinUser">
+        insert into tbl_member
+            (userid, userpw, username)
+        values (#{userid}, #{userpw}, #{userName})
+    </insert>
+
+    <insert id="joinUserAuth">
+        insert into tbl_member_auth
+            (userid, auth)
+        values (#{userid}, #{auth})
+    </insert>
+
 </mapper>

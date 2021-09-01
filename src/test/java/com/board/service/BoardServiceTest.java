@@ -2,18 +2,13 @@ package com.board.service;
 
 import com.board.config.RootConfig;
 import com.board.domain.BoardVO;
-import com.board.domain.Criteria;
-import com.board.domain.Search;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.support.lob.LobCreator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Log4j

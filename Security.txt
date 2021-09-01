@@ -1,0 +1,19 @@
+1. AbstractAuthenticationProcessingFilter 처리
+
+2. AuthenticationManager 처리 (로그인 처리)
+
+3. UserDetails 로 사용자 인증
+
+4. UserDetailsService 처리
+
+5. AuthenticationSuccessHandler (로그인 성공 처리)
+
+
+
+
+=====================================================================================================================================
+
+1. 인증 / 인가
+    인증 : 사용자임을 인증 하는 것
+    인가 : 사용자가 접근(사용) 할 수 있는 권한 부여
+

@@ -426,10 +426,10 @@
                 replyer: modalInputReplyer.val(),
                 bno    : bnoValue
             };
+
             replyService.add(reply, function (result) {
 
                 alert(result.message);
-                alert(result.status);
 
                 modal.find("input").val("");
                 modal.modal("hide");

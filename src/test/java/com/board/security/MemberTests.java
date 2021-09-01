@@ -5,18 +5,12 @@ import java.sql.PreparedStatement;
 
 import javax.sql.DataSource;
 
-import com.board.config.RootConfig;
-import com.board.config.SecurityConfig;
 import com.board.config.TestConfiguration;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 
 @TestConfiguration
 public class MemberTests {
